@@ -1,21 +1,19 @@
 import sys
 from random import randint
 
-from PyQt6 import uic
 from PyQt6.QtCore import QPointF
 from PyQt6.QtGui import QPainter, QColor
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt6.QtWidgets import QApplication, QMainWindow
+
+from design import Ui_MainWindow
 
 
-class My(QMainWindow):
+class My(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
+        self.setupUi(self)
 
-        self.draw_btn: QPushButton
         self.perform_draw = False
-
-        with open("UI.ui") as f:
-            uic.loadUi(f, self)
         self.draw_btn.clicked.connect(self.draw_circle)
 
     def draw_circle(self):
@@ -28,7 +26,7 @@ class My(QMainWindow):
 
         qp = QPainter()
         qp.begin(self)
-        qp.setPen(QColor("#fc0"))
+        qp.setPen(QColor(*[randint(0, 255) for _ in range(3)]))
 
         radius = randint(10, int(min(self.height(), self.width()) / 2.5))
         center = QPointF(self.width() / 2, self.height() / 2)
